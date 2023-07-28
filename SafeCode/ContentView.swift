@@ -17,88 +17,7 @@ struct ContentView: View {
     @State private var allowNumber = false
     @State private var allowSymbol = false
     @State private var showAlert = false
-    @State private var alertType = "password-length"
-    
-    let ERROR_MESSAGE = [
-        "password-length": "Password length cannot be zero.",
-        "allow-single-character": "At least one character type (uppercase, lowercase, number, symbol) must be allowed."
-    ]
-    
-    func evaluatePasswordStrength(_ password: String) -> String {
-        let passwordLength = password.count
-        var score = 0
-        
-        // Evaluate password length
-        score += max(0, passwordLength - 8) * 2
-        
-        // Evaluate character types
-        let characterTypes: [CharacterSet] = [.uppercaseLetters, .lowercaseLetters, .decimalDigits, .symbols]
-        for type in characterTypes {
-            if password.rangeOfCharacter(from: type) != nil {
-                score += 5
-            }
-        }
-        
-        // Evaluate variety of characters
-        let uniqueCharacters = Set(password)
-        score += min(10, uniqueCharacters.count)
-        
-        // Penalize common patterns
-        let commonPatterns = ["123456", "password", "qwerty", "123456789"]
-        if commonPatterns.contains(password.lowercased()) {
-            score -= 20
-        }
-        
-        // Map score to password strength levels
-        switch score {
-        case 0...10:
-            return "Very Weak"
-        case 11...20:
-            return "Weak"
-        case 21...30:
-            return "Moderate"
-        case 31...40:
-            return "Strong"
-        default:
-            return "Very Strong"
-        }
-    }
-    
-    func generateRandomPassword(length: Int, _ allowUppercase: Bool, _ allowLowercase: Bool, _ allowNumber: Bool, _ allowSymbol: Bool) -> String {
-        let uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        let lowercaseLetters = "abcdefghijklmnopqrstuvwxyz"
-        let numbers = "0123456789"
-        let symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/"
-        
-        var allowedCharacters = ""
-        
-        if allowUppercase {
-            allowedCharacters += uppercaseLetters
-        }
-        if allowLowercase {
-            allowedCharacters += lowercaseLetters
-        }
-        if allowNumber {
-            allowedCharacters += numbers
-        }
-        if allowSymbol {
-            allowedCharacters += symbols
-        }
-        
-        if allowedCharacters.isEmpty || length == 0 {
-            showAlert = true
-            if length == 0 {
-                alertType = "password-length"
-            } else {
-                alertType = "allow-single-character"
-            }
-        } else {
-            let password = String((0..<length).compactMap { _ in allowedCharacters.randomElement() })
-            return password
-        }
-        
-        return ""
-    }
+    @State private var errorMessage = ""
     
     var body: some View {
         NavigationStack {
@@ -165,15 +84,18 @@ struct ContentView: View {
                 }
                 
                 Button("Generate") {
-                    var generatedPassword = generateRandomPassword(length: Int(passwordLength), allowUppercase, allowLowercase, allowNumber, allowSymbol)
+                    let (success, generatedPassword, message) = generateRandomPassword(length: Int(passwordLength), allowUppercase, allowLowercase, allowNumber, allowSymbol)
                     
-                    password = generatedPassword
-                    
-                    var generatedPasswordStrength = evaluatePasswordStrength(generatedPassword)
-                    
-                    passwordStrength = generatedPasswordStrength
+                    if success {
+                        password = generatedPassword
+                        let generatedPasswordStrength = evaluatePasswordStrength(generatedPassword)
+                        passwordStrength = generatedPasswordStrength
+                    } else {
+                        showAlert = true
+                        errorMessage = message
+                    }
                 }
-                .alert(ERROR_MESSAGE[alertType]!, isPresented: $showAlert) {
+                .alert(errorMessage, isPresented: $showAlert) {
                         Button("OK", role: .cancel) { }
                     }
                     .frame(maxWidth: .infinity)
