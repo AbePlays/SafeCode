@@ -17,6 +17,7 @@ struct HomeView: View {
     @State private var allowNumber = false
     @State private var allowSymbol = false
     @State private var showAlert = false
+    @State private var showSheet = false
     @State private var errorMessage = ""
     
     var body: some View {
@@ -83,23 +84,37 @@ struct HomeView: View {
                     .toggleStyle(.switch)
                 }
                 
-                Button("Generate") {
-                    let (success, generatedPassword, message) = generateRandomPassword(length: Int(passwordLength), allowUppercase, allowLowercase, allowNumber, allowSymbol)
-                    
-                    if success {
-                        password = generatedPassword
-                        let generatedPasswordStrength = evaluatePasswordStrength(generatedPassword)
-                        passwordStrength = generatedPasswordStrength
-                    } else {
-                        showAlert = true
-                        errorMessage = message
+                HStack (spacing: 20) {
+                    Button("Generate") {
+                        let (success, generatedPassword, message) = generateRandomPassword(length: Int(passwordLength), allowUppercase, allowLowercase, allowNumber, allowSymbol)
+                        
+                        if success {
+                            password = generatedPassword
+                            let generatedPasswordStrength = evaluatePasswordStrength(generatedPassword)
+                            passwordStrength = generatedPasswordStrength
+                        } else {
+                            showAlert = true
+                            errorMessage = message
+                        }
                     }
-                }
-                .alert(errorMessage, isPresented: $showAlert) {
+                    .alert(errorMessage, isPresented: $showAlert) {
                         Button("OK", role: .cancel) { }
                     }
                     .frame(maxWidth: .infinity)
-                
+                    
+                    
+                    Button {
+                        showSheet.toggle()
+                    } label: {
+                        Text("Save")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(password.count == 0)
+                    .sheet(isPresented: $showSheet) {
+                        SaveEntityView(password: password)
+                    }
+                }
             }
             .navigationTitle("Password Generator")
         }
