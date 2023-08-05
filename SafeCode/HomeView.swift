@@ -11,7 +11,6 @@ struct HomeView: View {
     @State private var password = ""
     @State private var passwordStrength = "Very Weak"
     @State private var passwordLength = 0.0
-    @State private var isEditing = false
     @State private var allowUppercase = false
     @State private var allowLowercase = false
     @State private var allowNumber = false
@@ -20,17 +19,42 @@ struct HomeView: View {
     @State private var showSheet = false
     @State private var errorMessage = ""
     
+    func resetState() {
+        password = ""
+        passwordStrength = "Very Weak"
+        passwordLength = 0.0
+        allowUppercase = false
+        allowLowercase = false
+        allowNumber = false
+        allowSymbol = false
+    }
+    
+    func handleGeneratePressed() {
+        let (success, generatedPassword, message) = generateRandomPassword(length: Int(passwordLength), allowUppercase, allowLowercase, allowNumber, allowSymbol)
+        
+        if success {
+            password = generatedPassword
+            let generatedPasswordStrength = evaluatePasswordStrength(generatedPassword)
+            passwordStrength = generatedPasswordStrength
+        } else {
+            showAlert = true
+            errorMessage = message
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     HStack {
                         Text("\(password.count > 0 ? password : "Your Password")")
+                            .foregroundColor(password.count == 0 ? .gray : .primary)
                         Spacer()
                         Button(action: {
                             print("Copy")
                         }) {
                             Image(systemName: "doc.on.doc")
+                                .accessibilityLabel(Text("Copy to Clipboard"))
                                 .foregroundColor(password.count == 0 ? .gray : .blue)
                         }
                         .disabled(password.count == 0)
@@ -52,14 +76,7 @@ struct HomeView: View {
                         Text("\(Int(passwordLength))")
                     }
                     
-                    Slider(
-                        value: $passwordLength,
-                        in: 0...20,
-                        step: 1,
-                        onEditingChanged: { editing in
-                            isEditing = editing
-                        }
-                    )
+                    Slider(value: $passwordLength, in: 0...20, step: 1)
                 }
                 
                 Section {
@@ -85,23 +102,15 @@ struct HomeView: View {
                 }
                 
                 HStack (spacing: 20) {
-                    Button("Generate") {
-                        let (success, generatedPassword, message) = generateRandomPassword(length: Int(passwordLength), allowUppercase, allowLowercase, allowNumber, allowSymbol)
-                        
-                        if success {
-                            password = generatedPassword
-                            let generatedPasswordStrength = evaluatePasswordStrength(generatedPassword)
-                            passwordStrength = generatedPasswordStrength
-                        } else {
-                            showAlert = true
-                            errorMessage = message
-                        }
+                    Button {
+                        handleGeneratePressed()
+                    } label: {
+                        Text("Generate")
+                            .frame(maxWidth: .infinity)
                     }
                     .alert(errorMessage, isPresented: $showAlert) {
                         Button("OK", role: .cancel) { }
                     }
-                    .frame(maxWidth: .infinity)
-                    
                     
                     Button {
                         showSheet.toggle()
@@ -112,7 +121,10 @@ struct HomeView: View {
                     .buttonStyle(.borderedProminent)
                     .disabled(password.count == 0)
                     .sheet(isPresented: $showSheet) {
-                        SaveEntityView(password: password)
+                        SaveEntityView(password: password, onSave: {
+                            resetState()
+                            showSheet = false
+                        })
                     }
                 }
             }

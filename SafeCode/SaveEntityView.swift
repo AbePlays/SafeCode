@@ -9,10 +9,12 @@ import SwiftUI
 
 struct SaveEntityView: View {
     let password: String
+    let onSave: () -> ()
     @EnvironmentObject var userData: Data
     
     @Environment(\.dismiss) var dismiss
     @State private var label = ""
+    @State private var showAlert = false
     @State private var additionalInfo = ""
     
     
@@ -26,7 +28,7 @@ struct SaveEntityView: View {
                 }
                 
                 Section {
-                    TextField("", text: $additionalInfo)
+                    TextEditor(text: $additionalInfo)
                 } header: {
                     Text("Additional Info (Optional)")
                 }
@@ -43,8 +45,7 @@ struct SaveEntityView: View {
                     )
                     
                     userData.entities.append(entity)
-                    print(userData.entities.count)
-                    dismiss()
+                    showAlert = true
                 } label: {
                     Text("Save")
                         .frame(maxWidth: .infinity)
@@ -52,14 +53,26 @@ struct SaveEntityView: View {
                 .buttonStyle(.borderedProminent)
                 .disabled(label.count == 0)
             }
+            .alert("Password Saved Successfully", isPresented: $showAlert) {
+                Button("OK") {
+                    onSave()
+                }
+            }
             .navigationTitle("Save your password")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar() {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 }
 
 struct SaveEntityView_Previews: PreviewProvider {
     static var previews: some View {
-        SaveEntityView(password: "123456")
+        SaveEntityView(password: "123456", onSave: {})
     }
 }
