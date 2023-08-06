@@ -8,27 +8,29 @@
 import SwiftUI
 
 struct SaveEntityView: View {
+    var id = UUID()
+    var label = ""
+    var additionalInfo = ""
     let password: String
     let onSave: () -> ()
     @EnvironmentObject var userData: Data
     
     @Environment(\.dismiss) var dismiss
-    @State private var label = ""
+    @State private var editLabel = ""
     @State private var showAlert = false
-    @State private var additionalInfo = ""
-    
+    @State private var editAdditionalInfo = ""
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("", text: $label)
+                    TextField("", text: $editLabel)
                 } header: {
                     Text("Label")
                 }
                 
                 Section {
-                    TextEditor(text: $additionalInfo)
+                    TextEditor(text: $editAdditionalInfo)
                 } header: {
                     Text("Additional Info (Optional)")
                 }
@@ -41,25 +43,40 @@ struct SaveEntityView: View {
                 
                 Button {
                     let entity = Entity(
-                        label: label, password: password, additionalInfo: additionalInfo
+                        label: editLabel, password: password, additionalInfo: editAdditionalInfo
                     )
                     
-                    userData.entities.append(entity)
+                    let updatedEntities = userData.entities
+                    
+                    if let index = updatedEntities.firstIndex(where: { entity in
+                        entity.id == id
+                    }) {
+                        updatedEntities[index].label = editLabel
+                        updatedEntities[index].additionalInfo = editAdditionalInfo
+                        updatedEntities[index].createdAt = Date.now
+                        print(updatedEntities)
+                        userData.entities = updatedEntities
+                    } else {
+                        userData.entities.append(entity)
+                    }
+                    
                     showAlert = true
                 } label: {
                     Text("Save")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(label.count == 0)
+                .disabled(editLabel.count == 0)
             }
-            .alert("Password Saved Successfully", isPresented: $showAlert) {
+            .alert("Entity Saved Successfully", isPresented: $showAlert) {
                 Button("OK") {
                     onSave()
                 }
             }
-            .navigationTitle("Save your password")
-            .navigationBarTitleDisplayMode(.inline)
+            .onAppear(perform: {
+                editLabel = label
+                editAdditionalInfo = additionalInfo
+            })
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -73,6 +90,7 @@ struct SaveEntityView: View {
 
 struct SaveEntityView_Previews: PreviewProvider {
     static var previews: some View {
-        SaveEntityView(password: "123456", onSave: {})
+        SaveEntityView(label: "BOOM", password: "123456", onSave: {})
+            .environmentObject(Data())
     }
 }

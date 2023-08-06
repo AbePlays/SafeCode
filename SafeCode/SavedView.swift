@@ -22,10 +22,10 @@ struct SavedView: View {
                     List(sortedEntities) { entity in
                         NavigationLink {
                             EntityView(entity: entity)
+                                .environmentObject(userData)
                         } label: {
                             Text(entity.label)
                         }
-                        
                     }
                 }
             }

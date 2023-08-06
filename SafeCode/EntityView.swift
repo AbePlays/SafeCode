@@ -9,8 +9,10 @@ import SwiftUI
 
 struct EntityView: View {
     let entity: Entity
+    @EnvironmentObject var userData: Data
     
     @State private var copied = false
+    @State private var showSheet = false
     
     var body: some View {
         List {
@@ -59,10 +61,22 @@ struct EntityView: View {
                 Text(entity.createdAt.formatted())
             }
         }
+        .sheet(isPresented: $showSheet) {
+            SaveEntityView(
+                id: entity.id,
+                label: entity.label,
+                additionalInfo: entity.additionalInfo,
+                password: entity.password,
+                onSave: {
+                    showSheet = false
+                }
+            )
+            .environmentObject(userData)
+        }
         .toolbar {
             ToolbarItem (placement: .navigationBarTrailing) {
                 Button {
-                    
+                    showSheet = true
                 } label: {
                     Image(systemName: "square.and.pencil")
                         .accessibilityLabel(Text("Edit"))
@@ -77,5 +91,6 @@ struct EntityView_Previews: PreviewProvider {
         NavigationStack {
             EntityView(entity: Entity(label: "Netflix", password: "123456", additionalInfo: "Some Info"))
         }
+        .environmentObject(Data())
     }
 }
