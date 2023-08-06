@@ -20,7 +20,12 @@ struct SavedView: View {
                         a.createdAt > b.createdAt
                     })
                     List(sortedEntities) { entity in
-                        Text(entity.label)
+                        NavigationLink {
+                            EntityView(entity: entity)
+                        } label: {
+                            Text(entity.label)
+                        }
+                        
                     }
                 }
             }
@@ -30,8 +35,14 @@ struct SavedView: View {
 }
 
 struct SavedView_Previews: PreviewProvider {
+    static let previewData: Data = {
+        let dummyData = Data()
+        dummyData.entities.append(Entity(label: "Netflix", password: "123456", additionalInfo: ""))
+        return dummyData
+    }()
+    
     static var previews: some View {
         SavedView()
-            .environmentObject(Data())
+            .environmentObject(previewData)
     }
 }
