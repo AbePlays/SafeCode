@@ -8,23 +8,19 @@
 import SwiftUI
 
 struct SavedView: View {
-    @EnvironmentObject var userData: Data
+    @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Password>
     
     var body: some View {
         NavigationStack {
             VStack {
-                if userData.entities.isEmpty {
+                if passwords.isEmpty {
                     Text("No passwords saved.")
                 } else {
-                    let sortedEntities = userData.entities.sorted(by: { a, b in
-                        a.createdAt > b.createdAt
-                    })
-                    List(sortedEntities) { entity in
+                    List(passwords) { password in
                         NavigationLink {
-                            EntityView(entity: entity)
-                                .environmentObject(userData)
+                            EntityView(id: password.id!)
                         } label: {
-                            Text(entity.label)
+                            Text(password.service ?? "")
                         }
                     }
                 }
@@ -35,14 +31,7 @@ struct SavedView: View {
 }
 
 struct SavedView_Previews: PreviewProvider {
-    static let previewData: Data = {
-        let dummyData = Data()
-        dummyData.entities.append(Entity(label: "Netflix", password: "123456", additionalInfo: ""))
-        return dummyData
-    }()
-    
     static var previews: some View {
         SavedView()
-            .environmentObject(previewData)
     }
 }

@@ -8,56 +8,67 @@
 import SwiftUI
 
 struct SaveEntityView: View {
-    var id = UUID()
-    var label = ""
-    var additionalInfo = ""
-    let password: String
+    var id: UUID?
+    var password: String?
     let onSave: () -> ()
-    @EnvironmentObject var userData: Data
-    
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
-    @State private var editLabel = ""
+    @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Password>
+    
+    @State private var label = ""
+    @State private var service = ""
+    @State private var username = ""
+    @State private var editPassword = ""
     @State private var showAlert = false
-    @State private var editAdditionalInfo = ""
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("", text: $editLabel)
+                    TextField("", text: $service)
                 } header: {
-                    Text("Label")
+                    Text("Service")
                 }
                 
                 Section {
-                    TextEditor(text: $editAdditionalInfo)
+                    TextField("", text: $username)
                 } header: {
-                    Text("Additional Info (Optional)")
+                    Text("Username")
                 }
                 
-                Section {
-                    Text("\(password)")
-                } header: {
-                    Text("Your Password")
+                if (id == nil) {
+                    Section {
+                        Text(password ?? "")
+                    } header: {
+                        Text("Your Password")
+                    }
+                } else {
+                    Section {
+                        TextField("", text: $editPassword)
+                    } header: {
+                        Text("Password")
+                    }
                 }
                 
                 Button {
-                    let entity = Entity(
-                        label: editLabel, password: password, additionalInfo: editAdditionalInfo
-                    )
-                    
-                    let updatedEntities = userData.entities
-                    
-                    if let index = updatedEntities.firstIndex(where: { entity in
-                        entity.id == id
+                    if let currentPassword = passwords.first(where: { password in
+                        password.id == id
                     }) {
-                        updatedEntities[index].label = editLabel
-                        updatedEntities[index].additionalInfo = editAdditionalInfo
-                        updatedEntities[index].createdAt = Date.now
-                        print(updatedEntities)
-                        userData.entities = updatedEntities
+                        currentPassword.username = username
+                        currentPassword.password = editPassword
+                        currentPassword.service = service
+                        currentPassword.updatedAt = Date.now
                     } else {
-                        userData.entities.append(entity)
+                        let newPassword = Password(context: moc)
+                        
+                        newPassword.id = UUID()
+                        newPassword.username = username
+                        newPassword.password = password
+                        newPassword.service = service
+                        newPassword.createdAt = Date.now
+                        newPassword.updatedAt = Date.now
+                        
+                        try? moc.save()
                     }
                     
                     showAlert = true
@@ -66,17 +77,28 @@ struct SaveEntityView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(editLabel.count == 0)
+                .disabled(service.isEmpty || username.isEmpty)
             }
-            .alert("Entity Saved Successfully", isPresented: $showAlert) {
+            .alert("Password Saved Successfully", isPresented: $showAlert) {
                 Button("OK") {
                     onSave()
                 }
             }
-            .onAppear(perform: {
-                editLabel = label
-                editAdditionalInfo = additionalInfo
-            })
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(id == nil ? "Save your password" : "Edit your password")
+            .onAppear {
+                if id != nil {
+                    if let savedPassword = passwords.first(where: { password in
+                        password.id == id
+                    }) {
+                        service = savedPassword.service ?? ""
+                        username = savedPassword.username ?? ""
+                        editPassword = savedPassword.password ?? ""
+                    } else {
+                        fatalError("Core Data does not contain an entry with id \(id!)")
+                    }
+                }
+            }
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -90,7 +112,6 @@ struct SaveEntityView: View {
 
 struct SaveEntityView_Previews: PreviewProvider {
     static var previews: some View {
-        SaveEntityView(label: "BOOM", password: "123456", onSave: {})
-            .environmentObject(Data())
+        SaveEntityView(password: "123456", onSave: {})
     }
 }

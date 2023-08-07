@@ -13,8 +13,6 @@ enum Tabs {
 }
 
 struct ContentView: View {
-    @EnvironmentObject var userData: Data
-    
     @State private var currentTab: Tabs = .home
     
     var body: some View {
@@ -29,7 +27,6 @@ struct ContentView: View {
                 .tabItem {
                     Label("Saved", systemImage: "tray")
                 }
-                .environmentObject(userData)
                 .tag(Tabs.saved)
         }
     }
@@ -38,6 +35,5 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(Data())
     }
 }

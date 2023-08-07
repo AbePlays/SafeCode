@@ -8,18 +8,34 @@
 import SwiftUI
 
 struct EntityView: View {
-    let entity: Entity
-    @EnvironmentObject var userData: Data
+    let id: UUID
+    @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Password>
     
     @State private var copied = false
     @State private var showSheet = false
     
+    var password: Password {
+        if let savedPassword = passwords.first(where: { password in
+            password.id == id
+        }) {
+            return savedPassword
+        } else {
+            fatalError("Core Data could not find record of Id \(id)")
+        }
+    }
+    
     var body: some View {
         List {
             HStack {
-                Text("Label: ")
+                Text("Service: ")
                     .bold()
-                Text(entity.label)
+                Text(password.service ?? "")
+            }
+            
+            HStack {
+                Text("Username: ")
+                    .bold()
+                Text(password.username ?? "")
             }
             
             HStack {
@@ -27,10 +43,10 @@ struct EntityView: View {
                     .bold()
                 
                 HStack {
-                    Text(entity.password)
+                    Text(password.password ?? "")
                     Button {
                         // Copy to clipboard
-                        UIPasteboard.general.string = entity.password
+                        UIPasteboard.general.string = password.password
                         withAnimation {
                             copied = true
                         }
@@ -42,36 +58,31 @@ struct EntityView: View {
                         }
                     } label: {
                         Image(systemName: copied ? "checkmark" : "doc.on.doc")
-                            .accessibilityLabel(Text(copied ? "Copied" : "Copy"))
+                            .accessibilityLabel(copied ? "Copied" : "Copy")
                     }
                 }
-            }
-            
-            HStack {
-                Text("Additional Info: ")
-                    .bold()
-                
-                Text(entity.additionalInfo.count > 0 ? entity.additionalInfo : "-")
             }
             
             HStack {
                 Text("Created On: ")
                     .bold()
                 
-                Text(entity.createdAt.formatted())
+                Text(password.createdAt?.formatted() ?? "")
+            }
+            
+            HStack {
+                Text("Last Updated On: ")
+                    .bold()
+                Text(password.updatedAt?.formatted() ?? "")
             }
         }
         .sheet(isPresented: $showSheet) {
             SaveEntityView(
-                id: entity.id,
-                label: entity.label,
-                additionalInfo: entity.additionalInfo,
-                password: entity.password,
+                id: id,
                 onSave: {
                     showSheet = false
                 }
             )
-            .environmentObject(userData)
         }
         .toolbar {
             ToolbarItem (placement: .navigationBarTrailing) {
@@ -89,8 +100,7 @@ struct EntityView: View {
 struct EntityView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            EntityView(entity: Entity(label: "Netflix", password: "123456", additionalInfo: "Some Info"))
+            EntityView(id: UUID())
         }
-        .environmentObject(Data())
     }
 }

@@ -30,7 +30,9 @@ struct HomeView: View {
     }
     
     func handleGeneratePressed() {
-        let (success, generatedPassword, message) = generateRandomPassword(length: Int(passwordLength), allowUppercase, allowLowercase, allowNumber, allowSymbol)
+        let (success, generatedPassword, message) = generateRandomPassword(
+            length: Int(passwordLength), allowUppercase, allowLowercase, allowNumber, allowSymbol
+        )
         
         if success {
             password = generatedPassword
@@ -65,7 +67,6 @@ struct HomeView: View {
                         Spacer()
                         Text(passwordStrength)
                     }
-                    
                 }
                 
                 VStack {

@@ -10,6 +10,7 @@ import Foundation
 class Entity: Identifiable {
     var id = UUID()
     var createdAt = Date.now
+    var updatedAt = Date.now
     var label: String
     var password: String
     var additionalInfo: String

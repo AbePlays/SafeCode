@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3E4B17092A7F600A003EBED0 /* EntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4B17082A7F600A003EBED0 /* EntityView.swift */; };
-		3E791CFC2A7E8DAE00059350 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E791CFB2A7E8DAE00059350 /* Entity.swift */; };
 		3E791CFE2A7E8E8E00059350 /* SaveEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E791CFD2A7E8E8E00059350 /* SaveEntityView.swift */; };
 		3E8710FF2A7E28C100CB840C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8710FE2A7E28C100CB840C /* HomeView.swift */; };
 		3E8711012A7E290C00CB840C /* SavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8711002A7E290C00CB840C /* SavedView.swift */; };
@@ -17,11 +16,12 @@
 		3EA922912A6F700A00C9F464 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA922902A6F700A00C9F464 /* ContentView.swift */; };
 		3EA922932A6F700B00C9F464 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EA922922A6F700B00C9F464 /* Assets.xcassets */; };
 		3EA922972A6F700B00C9F464 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EA922962A6F700B00C9F464 /* Preview Assets.xcassets */; };
+		3EEC59802A7FC805004595BD /* Password.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3EEC597E2A7FC805004595BD /* Password.xcdatamodeld */; };
+		3EEC59822A7FC9CA004595BD /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEC59812A7FC9CA004595BD /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3E4B17082A7F600A003EBED0 /* EntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityView.swift; sourceTree = "<group>"; };
-		3E791CFB2A7E8DAE00059350 /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		3E791CFD2A7E8E8E00059350 /* SaveEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveEntityView.swift; sourceTree = "<group>"; };
 		3E8710FE2A7E28C100CB840C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		3E8711002A7E290C00CB840C /* SavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedView.swift; sourceTree = "<group>"; };
@@ -32,6 +32,8 @@
 		3EA922922A6F700B00C9F464 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3EA922942A6F700B00C9F464 /* SafeCode.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SafeCode.entitlements; sourceTree = "<group>"; };
 		3EA922962A6F700B00C9F464 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3EEC597F2A7FC805004595BD /* Password.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Password.xcdatamodel; sourceTree = "<group>"; };
+		3EEC59812A7FC9CA004595BD /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +68,8 @@
 			children = (
 				3EA9228E2A6F700900C9F464 /* SafeCodeApp.swift */,
 				3EA922902A6F700A00C9F464 /* ContentView.swift */,
-				3E791CFB2A7E8DAE00059350 /* Entity.swift */,
+				3EEC59812A7FC9CA004595BD /* DataController.swift */,
+				3EEC597E2A7FC805004595BD /* Password.xcdatamodeld */,
 				3E4B17082A7F600A003EBED0 /* EntityView.swift */,
 				3E8710FE2A7E28C100CB840C /* HomeView.swift */,
 				3E791CFD2A7E8E8E00059350 /* SaveEntityView.swift */,
@@ -159,11 +162,12 @@
 			files = (
 				3E947BCE2A74242B0054C163 /* utils.swift in Sources */,
 				3E8711012A7E290C00CB840C /* SavedView.swift in Sources */,
-				3E791CFC2A7E8DAE00059350 /* Entity.swift in Sources */,
 				3E4B17092A7F600A003EBED0 /* EntityView.swift in Sources */,
 				3E8710FF2A7E28C100CB840C /* HomeView.swift in Sources */,
+				3EEC59822A7FC9CA004595BD /* DataController.swift in Sources */,
 				3EA922912A6F700A00C9F464 /* ContentView.swift in Sources */,
 				3E791CFE2A7E8E8E00059350 /* SaveEntityView.swift in Sources */,
+				3EEC59802A7FC805004595BD /* Password.xcdatamodeld in Sources */,
 				3EA9228F2A6F700900C9F464 /* SafeCodeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -374,6 +378,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3EEC597E2A7FC805004595BD /* Password.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3EEC597F2A7FC805004595BD /* Password.xcdatamodel */,
+			);
+			currentVersion = 3EEC597F2A7FC805004595BD /* Password.xcdatamodel */;
+			path = Password.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3EA922832A6F700900C9F464 /* Project object */;
 }

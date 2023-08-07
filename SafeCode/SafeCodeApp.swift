@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct SafeCodeApp: App {
-    private var userData = Data()
+    @State private var dataController = DataController()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(userData)
+                .environment(\.managedObjectContext, dataController.container.viewContext)
         }
     }
 }
