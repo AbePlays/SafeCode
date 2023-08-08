@@ -10,13 +10,27 @@ import SwiftUI
 struct SavedView: View {
     @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Password>
     
+    @State private var searchText = ""
+    
+    var searchResults: [Password] {
+        if searchText.isEmpty {
+            return passwords.sorted { a, b in
+                return a.service! < b.service!
+            }
+        } else {
+            return passwords.filter { password in
+                return password.service?.contains(searchText) ?? false
+            }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
-                if passwords.isEmpty {
+                if searchResults.isEmpty {
                     Text("No passwords saved.")
                 } else {
-                    List(passwords) { password in
+                    List(searchResults) { password in
                         NavigationLink {
                             EntityView(password: password)
                         } label: {
@@ -26,7 +40,9 @@ struct SavedView: View {
                 }
             }
             .navigationTitle("Saved Passwords")
+            .searchable(text: $searchText, placement: .toolbar)
         }
+        
     }
 }
 
