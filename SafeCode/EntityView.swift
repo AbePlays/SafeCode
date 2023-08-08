@@ -8,21 +8,14 @@
 import SwiftUI
 
 struct EntityView: View {
-    let id: UUID
+    let password: Password
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Password>
     
+    @State private var showAlert = false
     @State private var copied = false
     @State private var showSheet = false
-    
-    var password: Password {
-        if let savedPassword = passwords.first(where: { password in
-            password.id == id
-        }) {
-            return savedPassword
-        } else {
-            fatalError("Core Data could not find record of Id \(id)")
-        }
-    }
     
     var body: some View {
         List {
@@ -75,10 +68,31 @@ struct EntityView: View {
                     .bold()
                 Text(password.updatedAt?.formatted() ?? "")
             }
+            
+            Section {
+                Button {
+                    showAlert = true
+                } label: {
+                    Text("Delete")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.red)
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .alert("Are you sure?", isPresented: $showAlert) {
+            Button("Delete", role: .destructive) {
+                moc.delete(password)
+                try? moc.save()
+                dismiss()
+            }
+        } message: {
+            Text("Password once deleted cannot be recovered?")
         }
         .sheet(isPresented: $showSheet) {
             SaveEntityView(
-                id: id,
+                id: password.id,
                 onSave: {
                     showSheet = false
                 }
@@ -97,10 +111,10 @@ struct EntityView: View {
     }
 }
 
-struct EntityView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            EntityView(id: UUID())
-        }
-    }
-}
+//struct EntityView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationStack {
+//            EntityView(id: UUID())
+//        }
+//    }
+//}

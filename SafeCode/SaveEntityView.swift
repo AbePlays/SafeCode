@@ -67,10 +67,9 @@ struct SaveEntityView: View {
                         newPassword.service = service
                         newPassword.createdAt = Date.now
                         newPassword.updatedAt = Date.now
-                        
-                        try? moc.save()
                     }
                     
+                    try? moc.save()
                     showAlert = true
                 } label: {
                     Text("Save")

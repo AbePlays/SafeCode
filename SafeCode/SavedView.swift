@@ -18,7 +18,7 @@ struct SavedView: View {
                 } else {
                     List(passwords) { password in
                         NavigationLink {
-                            EntityView(id: password.id!)
+                            EntityView(password: password)
                         } label: {
                             Text(password.service ?? "")
                         }
