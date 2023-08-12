@@ -5,112 +5,95 @@
 //  Created by Abhishek Rawat on 05/08/23.
 //
 
+import CoreData
 import SwiftUI
 
 struct SaveEntityView: View {
-    var id: UUID?
-    var password: String?
-    let onSave: () -> ()
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
-    @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Password>
+    var credential: Credential
     
-    @State private var label = ""
     @State private var service = ""
     @State private var username = ""
     @State private var editPassword = ""
     @State private var showAlert = false
     
+    func savePassword() {
+        if (credential.username ?? "").isEmpty {
+            credential.createdAt = Date.now
+        } else {
+            credential.updatedAt = Date.now
+        }
+        
+        credential.service = service
+        credential.username = username
+        credential.password = editPassword
+        
+        try? moc.save()
+        showAlert = true
+    }
+    
+    func isSaveDisabled() -> Bool {
+        return service.isEmpty || username.isEmpty
+    }
+    
     var body: some View {
         NavigationStack {
-            Form {
-                Section {
-                    TextField("", text: $service)
-                } header: {
-                    Text("Service")
-                }
-                
-                Section {
-                    TextField("", text: $username)
-                } header: {
-                    Text("Username")
-                }
-                
-                if (id == nil) {
-                    Section {
-                        Text(password ?? "")
-                    } header: {
-                        Text("Your Password")
-                    }
-                } else {
-                    Section {
-                        TextField("", text: $editPassword)
-                    } header: {
-                        Text("Password")
-                    }
-                }
-                
-                Button {
-                    if let currentPassword = passwords.first(where: { password in
-                        password.id == id
-                    }) {
-                        currentPassword.username = username
-                        currentPassword.password = editPassword
-                        currentPassword.service = service
-                        currentPassword.updatedAt = Date.now
-                    } else {
-                        let newPassword = Password(context: moc)
-                        
-                        newPassword.id = UUID()
-                        newPassword.username = username
-                        newPassword.password = password
-                        newPassword.service = service
-                        newPassword.createdAt = Date.now
-                        newPassword.updatedAt = Date.now
-                    }
+            VStack(spacing: 30) {
+                VStack(spacing: 5) {
+                    Text((credential.username ?? "").isEmpty  ? "Save" : "Edit")
+                        .fontWeight(.semibold)
+                        .font(.largeTitle)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    try? moc.save()
-                    showAlert = true
-                } label: {
-                    Text("Save")
-                        .frame(maxWidth: .infinity)
+                    Text("your credential")
+                        .fontWeight(.semibold)
+                        .font(.title)
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(service.isEmpty || username.isEmpty)
-            }
-            .alert("Password Saved Successfully", isPresented: $showAlert) {
-                Button("OK") {
-                    onSave()
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(id == nil ? "Save your password" : "Edit your password")
-            .onAppear {
-                if id != nil {
-                    if let savedPassword = passwords.first(where: { password in
-                        password.id == id
-                    }) {
-                        service = savedPassword.service ?? ""
-                        username = savedPassword.username ?? ""
-                        editPassword = savedPassword.password ?? ""
-                    } else {
-                        fatalError("Core Data does not contain an entry with id \(id!)")
+                
+                VStack(spacing: 20) {
+                    Input(text: $service, label: "Service")
+                    
+                    Input(text: $username, label: "User Name")
+                    
+                    Input(text: $editPassword, label: "Password", isDisabled: (credential.username ?? "").isEmpty)
+                    
+                    Button {
+                        savePassword()
+                    } label: {
+                        Text("Save")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding([.vertical], 10)
+                            .background(isSaveDisabled() ? Color("disabled") : .black)
+                            .cornerRadius(8)
                     }
+                    .disabled(isSaveDisabled())
+                    .padding(.top, 10)
+                }
+                
+                Spacer()
+            }
+            .alert("Credential saved successfully", isPresented: $showAlert) {
+                Button("Ok") {
+                    dismiss()
                 }
             }
+            .onAppear {
+                editPassword = credential.password ?? ""
+            }
+            .padding()
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
                     }
+                    .foregroundColor(.primary)
                 }
             }
         }
-    }
-}
-
-struct SaveEntityView_Previews: PreviewProvider {
-    static var previews: some View {
-        SaveEntityView(password: "123456", onSave: {})
     }
 }

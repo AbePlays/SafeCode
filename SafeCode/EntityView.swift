@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct EntityView: View {
-    let password: Password
+    let password: Credential
     @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Password>
+    @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Credential>
     
     @State private var showAlert = false
     @State private var copied = false
@@ -91,12 +91,7 @@ struct EntityView: View {
             Text("Password once deleted cannot be recovered?")
         }
         .sheet(isPresented: $showSheet) {
-            SaveEntityView(
-                id: password.id,
-                onSave: {
-                    showSheet = false
-                }
-            )
+            SaveEntityView(credential: password)
         }
         .toolbar {
             ToolbarItem (placement: .navigationBarTrailing) {

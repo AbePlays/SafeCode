@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
     
     @State private var password = ""
@@ -164,7 +165,13 @@ struct HomeView: View {
                 password = generatePassword()
             }
             .sheet(isPresented: $showSheet) {
-                SaveEntityView(password: password) {}
+                SaveEntityView(credential: {
+                    let credential = Credential(context: moc)
+                    credential.id = UUID()
+                    credential.password = password
+                    
+                    return credential
+                }())
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

@@ -8,15 +8,13 @@
 import SwiftUI
 
 struct SavedView: View {
-    @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Password>
+    @FetchRequest(sortDescriptors: []) var passwords: FetchedResults<Credential>
     
     @State private var searchText = ""
     
-    var searchResults: [Password] {
+    var searchResults: [Credential] {
         if searchText.isEmpty {
-            return passwords.sorted { a, b in
-                return a.service! < b.service!
-            }
+            return Array(passwords)
         } else {
             return passwords.filter { password in
                 return password.service?.contains(searchText) ?? false
