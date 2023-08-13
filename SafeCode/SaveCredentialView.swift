@@ -8,10 +8,11 @@
 import CoreData
 import SwiftUI
 
-struct SaveEntityView: View {
+struct SaveCredentialView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
-    var credential: Credential
+    var credential: Credential?
+    var password: String?
     
     @State private var service = ""
     @State private var username = ""
@@ -19,15 +20,23 @@ struct SaveEntityView: View {
     @State private var showAlert = false
     
     func savePassword() {
-        if (credential.username ?? "").isEmpty {
-            credential.createdAt = Date.now
+        if password != nil {
+            //  Create
+            let newCredential = Credential(context: moc)
+            newCredential.id = UUID()
+            newCredential.service = service
+            newCredential.username = username
+            newCredential.password = password
+            newCredential.createdAt = Date.now
+        } else if credential != nil {
+            //  Update
+            credential?.updatedAt = Date.now
+            credential?.service = service
+            credential?.username = username
+            credential?.password = editPassword
         } else {
-            credential.updatedAt = Date.now
+            fatalError("This should never occur")
         }
-        
-        credential.service = service
-        credential.username = username
-        credential.password = editPassword
         
         try? moc.save()
         showAlert = true
@@ -41,7 +50,7 @@ struct SaveEntityView: View {
         NavigationStack {
             VStack(spacing: 30) {
                 VStack(spacing: 5) {
-                    Text((credential.username ?? "").isEmpty  ? "Save" : "Edit")
+                    Text(password != nil  ? "Save" : "Edit")
                         .fontWeight(.semibold)
                         .font(.largeTitle)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -58,7 +67,7 @@ struct SaveEntityView: View {
                     
                     Input(text: $username, label: "User Name")
                     
-                    Input(text: $editPassword, label: "Password", isDisabled: (credential.username ?? "").isEmpty)
+                    Input(text: $editPassword, label: "Password", isDisabled: password != nil)
                     
                     Button {
                         savePassword()
@@ -83,7 +92,9 @@ struct SaveEntityView: View {
                 }
             }
             .onAppear {
-                editPassword = credential.password ?? ""
+                editPassword = (password == nil ? credential?.password ?? "" : password) ?? ""
+                service = credential?.service ?? ""
+                username = credential?.username ?? ""
             }
             .padding()
             .toolbar() {
@@ -95,5 +106,28 @@ struct SaveEntityView: View {
                 }
             }
         }
+    }
+}
+
+struct SaveCredentialView_Previews: PreviewProvider {
+    static let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    
+    static var previews: some View {
+        var credential: Credential {
+            let cred = Credential(context: moc)
+            cred.id = UUID()
+            cred.password = "123456"
+            cred.createdAt = Date.now
+            cred.updatedAt = Date.now
+            cred.service = "Netflix"
+            cred.username = "Abe"
+            
+            return cred
+        }
+        
+        return NavigationStack {
+            SaveCredentialView(credential: credential)
+        }
+        
     }
 }

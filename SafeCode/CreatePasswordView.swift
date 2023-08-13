@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct CreatePasswordView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
     
     @State private var password = ""
-    @State private var passwordStrength = "Very Weak"
     @State private var passwordLength = 4.0
     @State private var allowUppercase = true
     @State private var allowLowercase = false
@@ -43,16 +42,6 @@ struct HomeView: View {
             errorMessage = error
             return ""
         }
-    }
-    
-    func resetState() {
-        password = ""
-        passwordStrength = "Very Weak"
-        passwordLength = 0.0
-        allowUppercase = false
-        allowLowercase = false
-        allowNumber = false
-        allowSymbol = false
     }
     
     var body: some View {
@@ -161,17 +150,12 @@ struct HomeView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .padding()
             .background(.primary)
+            .navigationBarBackButtonHidden(true)
             .onAppear {
                 password = generatePassword()
             }
             .sheet(isPresented: $showSheet) {
-                SaveEntityView(credential: {
-                    let credential = Credential(context: moc)
-                    credential.id = UUID()
-                    credential.password = password
-                    
-                    return credential
-                }())
+                SaveCredentialView(password: password)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -197,10 +181,10 @@ struct HomeView: View {
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
+struct CreatePasswordView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            HomeView()
+            CreatePasswordView()
         }
     }
 }

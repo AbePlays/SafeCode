@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E4B17092A7F600A003EBED0 /* EntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4B17082A7F600A003EBED0 /* EntityView.swift */; };
-		3E791CFE2A7E8E8E00059350 /* SaveEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E791CFD2A7E8E8E00059350 /* SaveEntityView.swift */; };
-		3E8710FF2A7E28C100CB840C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8710FE2A7E28C100CB840C /* HomeView.swift */; };
-		3E8711012A7E290C00CB840C /* SavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8711002A7E290C00CB840C /* SavedView.swift */; };
+		3E4B17092A7F600A003EBED0 /* CredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4B17082A7F600A003EBED0 /* CredentialView.swift */; };
+		3E5D80EE2A889B670047AA23 /* DetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D80ED2A889B670047AA23 /* DetailCardView.swift */; };
+		3E791CFE2A7E8E8E00059350 /* SaveCredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E791CFD2A7E8E8E00059350 /* SaveCredentialView.swift */; };
+		3E8710FF2A7E28C100CB840C /* CreatePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8710FE2A7E28C100CB840C /* CreatePasswordView.swift */; };
+		3E87A5402A87BA92002852B7 /* CredentialListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E87A53F2A87BA92002852B7 /* CredentialListView.swift */; };
 		3E947BCE2A74242B0054C163 /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E947BCD2A74242B0054C163 /* utils.swift */; };
 		3EA44F7F2A86A19A001BA298 /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA44F7E2A86A19A001BA298 /* Input.swift */; };
 		3EA9228F2A6F700900C9F464 /* SafeCodeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9228E2A6F700900C9F464 /* SafeCodeApp.swift */; };
@@ -18,15 +19,16 @@
 		3EA922932A6F700B00C9F464 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EA922922A6F700B00C9F464 /* Assets.xcassets */; };
 		3EA922972A6F700B00C9F464 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EA922962A6F700B00C9F464 /* Preview Assets.xcassets */; };
 		3EBDEC412A83F8FB00AF8C98 /* VariantToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDEC402A83F8FB00AF8C98 /* VariantToggle.swift */; };
-		3EEC59802A7FC805004595BD /* Password.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3EEC597E2A7FC805004595BD /* Password.xcdatamodeld */; };
+		3EEC59802A7FC805004595BD /* Credential.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3EEC597E2A7FC805004595BD /* Credential.xcdatamodeld */; };
 		3EEC59822A7FC9CA004595BD /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEC59812A7FC9CA004595BD /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3E4B17082A7F600A003EBED0 /* EntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityView.swift; sourceTree = "<group>"; };
-		3E791CFD2A7E8E8E00059350 /* SaveEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveEntityView.swift; sourceTree = "<group>"; };
-		3E8710FE2A7E28C100CB840C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		3E8711002A7E290C00CB840C /* SavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedView.swift; sourceTree = "<group>"; };
+		3E4B17082A7F600A003EBED0 /* CredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialView.swift; sourceTree = "<group>"; };
+		3E5D80ED2A889B670047AA23 /* DetailCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardView.swift; sourceTree = "<group>"; };
+		3E791CFD2A7E8E8E00059350 /* SaveCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveCredentialView.swift; sourceTree = "<group>"; };
+		3E8710FE2A7E28C100CB840C /* CreatePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordView.swift; sourceTree = "<group>"; };
+		3E87A53F2A87BA92002852B7 /* CredentialListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialListView.swift; sourceTree = "<group>"; };
 		3E947BCD2A74242B0054C163 /* utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
 		3EA44F7E2A86A19A001BA298 /* Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
 		3EA9228B2A6F700900C9F464 /* SafeCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,15 +74,16 @@
 			children = (
 				3EA9228E2A6F700900C9F464 /* SafeCodeApp.swift */,
 				3EA922902A6F700A00C9F464 /* ContentView.swift */,
+				3E8710FE2A7E28C100CB840C /* CreatePasswordView.swift */,
+				3E87A53F2A87BA92002852B7 /* CredentialListView.swift */,
+				3E4B17082A7F600A003EBED0 /* CredentialView.swift */,
 				3EEC59812A7FC9CA004595BD /* DataController.swift */,
-				3E4B17082A7F600A003EBED0 /* EntityView.swift */,
-				3E8710FE2A7E28C100CB840C /* HomeView.swift */,
-				3EBDEC402A83F8FB00AF8C98 /* VariantToggle.swift */,
-				3E791CFD2A7E8E8E00059350 /* SaveEntityView.swift */,
+				3E5D80ED2A889B670047AA23 /* DetailCardView.swift */,
 				3EA44F7E2A86A19A001BA298 /* Input.swift */,
-				3E8711002A7E290C00CB840C /* SavedView.swift */,
+				3E791CFD2A7E8E8E00059350 /* SaveCredentialView.swift */,
+				3EBDEC402A83F8FB00AF8C98 /* VariantToggle.swift */,
 				3E947BCD2A74242B0054C163 /* utils.swift */,
-				3EEC597E2A7FC805004595BD /* Password.xcdatamodeld */,
+				3EEC597E2A7FC805004595BD /* Credential.xcdatamodeld */,
 				3EA922922A6F700B00C9F464 /* Assets.xcassets */,
 				3EA922942A6F700B00C9F464 /* SafeCode.entitlements */,
 				3EA922952A6F700B00C9F464 /* Preview Content */,
@@ -166,16 +169,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E87A5402A87BA92002852B7 /* CredentialListView.swift in Sources */,
 				3E947BCE2A74242B0054C163 /* utils.swift in Sources */,
-				3E8711012A7E290C00CB840C /* SavedView.swift in Sources */,
-				3E4B17092A7F600A003EBED0 /* EntityView.swift in Sources */,
+				3E4B17092A7F600A003EBED0 /* CredentialView.swift in Sources */,
 				3EA44F7F2A86A19A001BA298 /* Input.swift in Sources */,
-				3E8710FF2A7E28C100CB840C /* HomeView.swift in Sources */,
+				3E8710FF2A7E28C100CB840C /* CreatePasswordView.swift in Sources */,
 				3EEC59822A7FC9CA004595BD /* DataController.swift in Sources */,
 				3EBDEC412A83F8FB00AF8C98 /* VariantToggle.swift in Sources */,
+				3E5D80EE2A889B670047AA23 /* DetailCardView.swift in Sources */,
 				3EA922912A6F700A00C9F464 /* ContentView.swift in Sources */,
-				3E791CFE2A7E8E8E00059350 /* SaveEntityView.swift in Sources */,
-				3EEC59802A7FC805004595BD /* Password.xcdatamodeld in Sources */,
+				3E791CFE2A7E8E8E00059350 /* SaveCredentialView.swift in Sources */,
+				3EEC59802A7FC805004595BD /* Credential.xcdatamodeld in Sources */,
 				3EA9228F2A6F700900C9F464 /* SafeCodeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -388,13 +392,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		3EEC597E2A7FC805004595BD /* Password.xcdatamodeld */ = {
+		3EEC597E2A7FC805004595BD /* Credential.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				3EEC597F2A7FC805004595BD /* Password.xcdatamodel */,
 			);
 			currentVersion = 3EEC597F2A7FC805004595BD /* Password.xcdatamodel */;
-			path = Password.xcdatamodeld;
+			path = Credential.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
