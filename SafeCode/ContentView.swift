@@ -24,6 +24,10 @@ struct ContentView: View {
         }
     }
     
+    var strongCount: Int {
+        return searchResults.filter { $0.strength >= 4 }.count
+    }
+    
     func authenticate() {
         let context = LAContext()
         var error: NSError?
@@ -57,7 +61,7 @@ struct ContentView: View {
                     
                     HStack {
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("\(credentials.count)")
+                            Text("\(searchResults.count)")
                                 .font(.title)
                                 .bold()
                             
@@ -71,7 +75,7 @@ struct ContentView: View {
                             .overlay(.white)
                         
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("\(credentials.count)")
+                            Text("\(strongCount)")
                                 .font(.title)
                                 .bold()
                             
@@ -85,7 +89,7 @@ struct ContentView: View {
                             .overlay(.white)
                         
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("\(credentials.count)")
+                            Text("\(searchResults.count - strongCount)")
                                 .font(.title)
                                 .bold()
                             

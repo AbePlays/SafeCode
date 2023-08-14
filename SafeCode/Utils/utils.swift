@@ -42,43 +42,28 @@ func generateRandomPassword(length: Int, _ allowUppercase: Bool, _ allowLowercas
     }
 }
 
-
-func evaluatePasswordStrength(_ password: String) -> String {
-    let passwordLength = password.count
-    var score = 0
+func evaluatePasswordStrength(_ password: String) -> Int {
+    let lengthRequirement = 8
+    let numericRegex = ".*[0-9]+.*"
+    let lowercaseRegex = ".*[a-z]+.*"
+    let uppercaseRegex = ".*[A-Z]+.*"
+    let specialCharacterRegex = ".*[^a-zA-Z0-9]+.*"
     
-    // Evaluate password length
-    score += max(0, passwordLength - 8) * 2
+    var strength = 1
     
-    // Evaluate character types
-    let characterTypes: [CharacterSet] = [.uppercaseLetters, .lowercaseLetters, .decimalDigits, .symbols]
-    for type in characterTypes {
-        if password.rangeOfCharacter(from: type) != nil {
-            score += 5
+    if password.count >= lengthRequirement {
+        strength = 2
+        if password.range(of: numericRegex, options: .regularExpression) != nil {
+            strength = 3
+        }
+        if password.range(of: lowercaseRegex, options: .regularExpression) != nil &&
+            password.range(of: uppercaseRegex, options: .regularExpression) != nil {
+            strength = 4
+        }
+        if password.range(of: specialCharacterRegex, options: .regularExpression) != nil {
+            strength = 5
         }
     }
     
-    // Evaluate variety of characters
-    let uniqueCharacters = Set(password)
-    score += min(10, uniqueCharacters.count)
-    
-    // Penalize common patterns
-    let commonPatterns = ["123456", "password", "qwerty", "123456789"]
-    if commonPatterns.contains(password.lowercased()) {
-        score -= 20
-    }
-    
-    // Map score to password strength levels
-    switch score {
-    case 0...10:
-        return "Very Weak"
-    case 11...20:
-        return "Weak"
-    case 21...30:
-        return "Moderate"
-    case 31...40:
-        return "Strong"
-    default:
-        return "Very Strong"
-    }
+    return strength
 }

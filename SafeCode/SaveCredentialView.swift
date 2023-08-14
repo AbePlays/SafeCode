@@ -28,12 +28,14 @@ struct SaveCredentialView: View {
             newCredential.username = username
             newCredential.password = password
             newCredential.createdAt = Date.now
+            newCredential.strength = Int16(evaluatePasswordStrength(password!))
         } else if credential != nil {
             //  Update
             credential?.updatedAt = Date.now
             credential?.service = service
             credential?.username = username
             credential?.password = editPassword
+            credential?.strength = Int16(evaluatePasswordStrength(editPassword))
         } else {
             fatalError("This should never occur")
         }
