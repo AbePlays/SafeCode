@@ -53,6 +53,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E5D81062A88F9000047AA23 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				3EA44F7E2A86A19A001BA298 /* Input.swift */,
+				3EBDEC402A83F8FB00AF8C98 /* VariantToggle.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		3E5D81072A88F9120047AA23 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3E947BCD2A74242B0054C163 /* utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		3EA922822A6F700900C9F464 = {
 			isa = PBXGroup;
 			children = (
@@ -72,6 +89,8 @@
 		3EA9228D2A6F700900C9F464 /* SafeCode */ = {
 			isa = PBXGroup;
 			children = (
+				3E5D81062A88F9000047AA23 /* Common */,
+				3E5D81072A88F9120047AA23 /* Utils */,
 				3EA9228E2A6F700900C9F464 /* SafeCodeApp.swift */,
 				3EA922902A6F700A00C9F464 /* ContentView.swift */,
 				3E8710FE2A7E28C100CB840C /* CreatePasswordView.swift */,
@@ -79,10 +98,7 @@
 				3E4B17082A7F600A003EBED0 /* CredentialView.swift */,
 				3EEC59812A7FC9CA004595BD /* DataController.swift */,
 				3E5D80ED2A889B670047AA23 /* DetailCardView.swift */,
-				3EA44F7E2A86A19A001BA298 /* Input.swift */,
 				3E791CFD2A7E8E8E00059350 /* SaveCredentialView.swift */,
-				3EBDEC402A83F8FB00AF8C98 /* VariantToggle.swift */,
-				3E947BCD2A74242B0054C163 /* utils.swift */,
 				3EEC597E2A7FC805004595BD /* Credential.xcdatamodeld */,
 				3EA922922A6F700B00C9F464 /* Assets.xcassets */,
 				3EA922942A6F700B00C9F464 /* SafeCode.entitlements */,
@@ -316,7 +332,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -352,7 +368,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";

@@ -5,11 +5,13 @@
 //  Created by Abhishek Rawat on 25/07/23.
 //
 
+import LocalAuthentication
 import SwiftUI
 
 struct ContentView: View {
     @FetchRequest(sortDescriptors: []) var credentials: FetchedResults<Credential>
     
+    @State private var isUnlocked = true
     @State private var searchText = ""
     
     var searchResults: [Credential] {
@@ -22,92 +24,143 @@ struct ContentView: View {
         }
     }
     
+    func authenticate() {
+        let context = LAContext()
+        var error: NSError?
+        
+        // check whether biometric authentication is possible
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            // it's possible, so go ahead and use it
+            let reason = "We need to unlock your passwords."
+            
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
+                // authentication has now completed
+                if success {
+                    isUnlocked = true
+                } else {
+                    // there was a problem
+                }
+            }
+        } else {
+            // no biometrics
+        }
+    }
+    
     var body: some View {
         NavigationStack {
-            VStack(spacing: 30) {
-                Text("Safe Code")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.largeTitle)
-                    .bold()
-                
-                HStack {
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("\(credentials.count)")
-                            .font(.title)
-                            .bold()
+            if isUnlocked {
+                VStack(spacing: 30) {
+                    Text("Safe Code")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.largeTitle)
+                        .bold()
+                    
+                    HStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("\(credentials.count)")
+                                .font(.title)
+                                .bold()
+                            
+                            Text("Passwords")
+                                .fontWeight(.semibold)
+                        }
+                        .frame(maxWidth: .infinity)
                         
-                        Text("Passwords")
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity)
-                    
-                    Divider()
-                        .frame(width: 2, height: 50)
-                        .overlay(.white)
-                    
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("\(credentials.count)")
-                            .font(.title)
-                            .bold()
+                        Divider()
+                            .frame(width: 2, height: 50)
+                            .overlay(.white)
                         
-                        Text("Strong")
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity)
-                    
-                    Divider()
-                        .frame(width: 2, height: 50)
-                        .overlay(.white)
-                    
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("\(credentials.count)")
-                            .font(.title)
-                            .bold()
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("\(credentials.count)")
+                                .font(.title)
+                                .bold()
+                            
+                            Text("Strong")
+                                .fontWeight(.semibold)
+                        }
+                        .frame(maxWidth: .infinity)
                         
-                        Text("Mediocre")
-                            .fontWeight(.semibold)
+                        Divider()
+                            .frame(width: 2, height: 50)
+                            .overlay(.white)
+                        
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("\(credentials.count)")
+                                .font(.title)
+                                .bold()
+                            
+                            Text("Mediocre")
+                                .fontWeight(.semibold)
+                        }
+                        .frame(maxWidth: .infinity)
                     }
-                    .frame(maxWidth: .infinity)
                 }
-            }
-            .foregroundColor(.white)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(.black)
-            
-            VStack(spacing: 20) {
-                HStack(alignment: .top) {
-                    Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                        .offset(y: 3)
-                    TextField("Search", text: $searchText)
-                }
-                .padding(10)
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(.black, lineWidth: 2))
+                .foregroundColor(.white)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(.black)
                 
-                if searchResults.isEmpty {
+                VStack(spacing: 20) {
+                    HStack(alignment: .top) {
+                        Image(systemName: "magnifyingglass")
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                            .offset(y: 3)
+                        
+                        TextField("", text: $searchText)
+                        
+                        if searchText.isEmpty {
+                            Text("Enter your text")
+                                .foregroundColor(.gray) // Set placeholder color
+                                .offset(x: -200)
+                        }
+                        
+                        
+                    }
+                    .padding(10)
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("primary").opacity(0.8), lineWidth: 2))
+                    
+                    if searchResults.isEmpty {
+                        Spacer()
+                        Text("No credentials saved")
+                            .fontWeight(.medium)
+                    } else {
+                        CredentialListView(credentials: searchResults)
+                    }
+                    
                     Spacer()
-                    Text("No credentials saved")
-                        .fontWeight(.medium)
-                } else {
-                    CredentialListView(credentials: searchResults)
                 }
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 6)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        CreatePasswordView()
-                    } label: {
-                        Image(systemName: "plus")
-                            .accessibilityLabel("Create a Credential")
-                            .foregroundColor(.white)
+                .onAppear(perform: authenticate)
+                .padding(.horizontal)
+                .padding(.vertical, 6)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink {
+                            CreatePasswordView()
+                        } label: {
+                            Image(systemName: "plus")
+                                .accessibilityLabel("Create a Credential")
+                                .foregroundColor(.white)
+                        }
                     }
                 }
+            } else {
+                VStack {
+                    Text("Use your biometrics to use the app.")
+                    
+                    Button {
+                        authenticate()
+                    } label: {
+                        Text("Continue")
+                            .bold()
+                            .foregroundColor(Color("secondary"))
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 30)
+                            .background(Color("primary"))
+                            .cornerRadius(8)
+                    }
+                }
+                .padding()
             }
         }
     }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DetailCardView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     var text: String
     var title: String
     
@@ -46,12 +48,12 @@ struct DetailCardView: View {
                 } label: {
                     Image(systemName: copied ? "checkmark" : "doc.on.doc")
                         .accessibilityLabel("Copy")
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                 }
             }
             .padding()
         }
-        .background(.gray.opacity(0.15))
+        .background(.gray.opacity(colorScheme == .dark ? 0.25 : 0.15))
         .cornerRadius(8)
     }
 }
@@ -59,5 +61,6 @@ struct DetailCardView: View {
 struct DetailCardView_Previews: PreviewProvider {
     static var previews: some View {
         DetailCardView(text: "Netflix", title: "Service")
+            .padding()
     }
 }

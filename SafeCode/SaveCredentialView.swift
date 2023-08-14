@@ -42,7 +42,7 @@ struct SaveCredentialView: View {
         showAlert = true
     }
     
-    func isSaveDisabled() -> Bool {
+    var isSaveDisabled: Bool {
         return service.isEmpty || username.isEmpty
     }
     
@@ -74,13 +74,13 @@ struct SaveCredentialView: View {
                     } label: {
                         Text("Save")
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
+                            .foregroundColor(Color("secondary"))
                             .frame(maxWidth: .infinity)
                             .padding([.vertical], 10)
-                            .background(isSaveDisabled() ? Color("disabled") : .black)
+                            .background(isSaveDisabled ? Color("disabled") : Color("primary"))
                             .cornerRadius(8)
                     }
-                    .disabled(isSaveDisabled())
+                    .disabled(isSaveDisabled)
                     .padding(.top, 10)
                 }
                 
@@ -109,25 +109,25 @@ struct SaveCredentialView: View {
     }
 }
 
-struct SaveCredentialView_Previews: PreviewProvider {
-    static let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-    
-    static var previews: some View {
-        var credential: Credential {
-            let cred = Credential(context: moc)
-            cred.id = UUID()
-            cred.password = "123456"
-            cred.createdAt = Date.now
-            cred.updatedAt = Date.now
-            cred.service = "Netflix"
-            cred.username = "Abe"
-            
-            return cred
-        }
-        
-        return NavigationStack {
-            SaveCredentialView(credential: credential)
-        }
-        
-    }
-}
+//struct SaveCredentialView_Previews: PreviewProvider {
+//    static let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+//
+//    static var previews: some View {
+//        var credential: Credential {
+//            let cred = Credential(context: moc)
+//            cred.id = UUID()
+//            cred.password = "123456"
+//            cred.createdAt = Date.now
+//            cred.updatedAt = Date.now
+//            cred.service = "Netflix"
+//            cred.username = "Abe"
+//
+//            return cred
+//        }
+//
+//        return NavigationStack {
+//            SaveCredentialView(credential: credential)
+//        }
+//
+//    }
+//}

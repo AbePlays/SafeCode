@@ -149,7 +149,7 @@ struct CreatePasswordView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .padding()
-            .background(.primary)
+            .background(.black)
             .navigationBarBackButtonHidden(true)
             .onAppear {
                 password = generatePassword()
@@ -173,8 +173,7 @@ struct CreatePasswordView: View {
                     } label: {
                         Label("Save", systemImage: "square.and.arrow.down")
                     }
-                    .disabled(password.isEmpty)
-                    .foregroundColor(password.isEmpty ? .gray : .black)
+                    .foregroundColor(.primary)
                 }
             }
         }

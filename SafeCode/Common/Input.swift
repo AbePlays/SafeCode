@@ -16,13 +16,14 @@ struct Input: View {
         VStack {
             Text("\(label)")
                 .fontWeight(.medium)
-                .foregroundColor(.black)
+                .foregroundColor(.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             TextField("", text: $text)
                 .accessibilityLabel("\(label) Field")
                 .accessibilityValue(Text(text))
                 .disabled(isDisabled ?? false)
+                .foregroundColor(.black)
                 .padding(8)
                 .background(isDisabled ?? false ? Color("disabled") : .white)
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(.gray, lineWidth: 3))
@@ -33,6 +34,7 @@ struct Input: View {
 
 struct Input_Previews: PreviewProvider {
     static var previews: some View {
-        Input(text: .constant(""), label: "Text Input", isDisabled: true)
+        Input(text: .constant(""), label: "Text Input", isDisabled: false)
+            .padding()
     }
 }

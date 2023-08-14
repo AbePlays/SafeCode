@@ -9,6 +9,7 @@ import SwiftUI
 
 struct VariantToggle: View {
     @Binding var toggle: Bool
+    @Environment(\.colorScheme) var colorScheme
     
     var exactlyOneTrue: Bool
     var title: String
@@ -34,7 +35,8 @@ struct VariantToggle: View {
                     .onChange(of: toggle) { newValue in
                         onChange?(newValue)
                     }
-                    .toggleStyle(SwitchToggleStyle(tint: .primary))
+                    .foregroundColor(.red)
+                    .toggleStyle(SwitchToggleStyle(tint: colorScheme == .dark ? .gray : .black))
             }
         }
     }

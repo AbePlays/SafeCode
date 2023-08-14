@@ -79,7 +79,7 @@ struct CredentialView: View {
                 } label: {
                     Image(systemName: "chevron.left")
                         .accessibilityLabel(Text("Go Back"))
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                 }
             }
             
@@ -89,7 +89,7 @@ struct CredentialView: View {
                 } label: {
                     Image(systemName: "square.and.pencil")
                         .accessibilityLabel(Text("Edit"))
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                 }
             }
         }
