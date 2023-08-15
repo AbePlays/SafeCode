@@ -111,15 +111,7 @@ struct ContentView: View {
                             .frame(width: 16, height: 16)
                             .offset(y: 3)
                         
-                        TextField("", text: $searchText)
-                        
-                        if searchText.isEmpty {
-                            Text("Enter your text")
-                                .foregroundColor(.gray) // Set placeholder color
-                                .offset(x: -200)
-                        }
-                        
-                        
+                        TextField("", text: $searchText, prompt: Text("Enter your text").foregroundColor(.gray))
                     }
                     .padding(10)
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("primary").opacity(0.8), lineWidth: 2))

@@ -109,6 +109,8 @@ struct CreatePasswordView: View {
             }
             .padding()
             
+            Spacer()
+            
             VStack {
                 HStack {
                     Text(password)
@@ -147,7 +149,7 @@ struct CreatePasswordView: View {
                     }
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, maxHeight: 100, alignment: .leading)
             .padding()
             .background(.black)
             .navigationBarBackButtonHidden(true)
